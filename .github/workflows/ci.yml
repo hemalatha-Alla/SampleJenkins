@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - '*'  # Matches all branches
+  pull_request:
+    branches:
+      - '*'  # Matches all branches
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -14,9 +18,14 @@ jobs:
       with:
         fetch-depth: 0  # Ensure full history is fetched to handle PRs correctly
 
-    # Run Maven commands to build and test the project
+    - name: List directory contents
+      run: ls -R
+
+    # Adjust working-directory if pom.xml is in a subdirectory
     - name: Build with Maven
       run: mvn clean install
+      working-directory: https://github.com/hemalatha-Alla/SampleJenkins
 
     - name: Run tests with Maven
       run: mvn test
+      working-directory: https://github.com/hemalatha-Alla/SampleJenkins
