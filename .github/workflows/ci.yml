@@ -22,10 +22,12 @@ jobs:
     - name: List directory contents
       run: ls -R
 
-    # Build with Maven, ensure that the correct working directory is set
+    # Build with Maven, setting the correct working-directory
     - name: Build with Maven
       run: mvn clean install
+      working-directory: /home/runner/work/SampleJenkins/SampleJenkins  # Set to correct path
 
     # Run tests with Maven
     - name: Run tests with Maven
       run: mvn test
+      working-directory: /home/runner/work/SampleJenkins/SampleJenkins  # Set to correct path
