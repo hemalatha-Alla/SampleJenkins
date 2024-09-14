@@ -15,10 +15,23 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
+      with:
+        fetch-depth: 0  # Ensure full history is fetched to allow branch operations
+
+    # Conditionally pull the latest code when a pull request is raised
+    - name: Pull latest code if PR is raised
+      if: github.event_name == 'pull_request'
+      run: |
+        git checkout ${{ github.head_ref }}  # Checkout the PR branch
+        git pull origin ${{ github.head_ref }}  # Pull the latest changes for the PR branch
 
     # Run Maven commands to build and test the project
     - name: Build with Maven
       run: mvn clean install
+      working-directory: https://github.com/hemalatha-Alla/SampleJenkins/blob/main/POM.xml
+	
 
     - name: Run tests with Maven
       run: mvn test
+      working-directory: https://github.com/hemalatha-Alla/SampleJenkins/blob/main/POM.xml
+
