@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - '*'  # Matches all branches
+  pull_request:
+    branches:
+      - '*'  # Matches all branches
 
 jobs:
   build:
@@ -23,10 +26,14 @@ jobs:
     - name: Print working directory
       run: pwd
 
+    # Step to print the contents of the POM.xml file for verification
+    - name: Print POM.xml contents
+      run: cat POM.xml
+
     # Build with Maven from the correct directory
-    - name: Build with Maven
+    - name: Build with Maven (debug)
       working-directory: ./  # Make sure to set the root directory
-      run: mvn clean install
+      run: mvn clean install -X  # Enable full debug logging
 
     # Run tests with Maven from the correct directory
     - name: Run tests with Maven
