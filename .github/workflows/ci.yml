@@ -24,8 +24,8 @@ jobs:
     # Adjust working-directory if pom.xml is in a subdirectory
     - name: Build with Maven
       run: mvn clean install
-      working-directory: https://github.com/hemalatha-Alla/SampleJenkins
+      working-directory: https://github.com/hemalatha-Alla/SampleJenkins/blob/main/POM.xml
 
     - name: Run tests with Maven
       run: mvn test
-      working-directory: https://github.com/hemalatha-Alla/SampleJenkins
+      working-directory: https://github.com/hemalatha-Alla/SampleJenkins/blob/main/POM.xml
