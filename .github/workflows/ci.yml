@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '*'  # Matches all branches
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -22,9 +23,12 @@ jobs:
     - name: Print working directory
       run: pwd
 
-    # Build with Maven
+    # Build with Maven from the correct directory
     - name: Build with Maven
+      working-directory: ./  # Make sure to set the root directory
       run: mvn clean install
 
+    # Run tests with Maven from the correct directory
     - name: Run tests with Maven
+      working-directory: ./  # Make sure to set the root directory
       run: mvn test
