@@ -4,10 +4,6 @@ on:
   push:
     branches:
       - '*'  # Matches all branches
-  pull_request:
-    branches:
-      - '*'  # Matches all branches
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,16 +14,18 @@ jobs:
       with:
         fetch-depth: 0  # Ensure full history is fetched
 
-    # Step to list the directory contents after checkout
+    # Step to list the directory contents after checkout for debugging
     - name: List directory contents
       run: ls -R
 
-    # Build with Maven, setting the correct working-directory
+    # Step to print the current working directory
+    - name: Print working directory
+      run: pwd
+
+    # Build with Maven
     - name: Build with Maven
       run: mvn clean install
-      working-directory: /home/runner/work/SampleJenkins/SampleJenkins  # Set to correct path
 
     # Run tests with Maven
     - name: Run tests with Maven
       run: mvn test
-      working-directory: /home/runner/work/SampleJenkins/SampleJenkins  # Set to correct path
