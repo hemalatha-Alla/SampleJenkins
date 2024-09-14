@@ -16,16 +16,16 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0  # Ensure full history is fetched to handle PRs correctly
+        fetch-depth: 0  # Ensure full history is fetched
 
+    # Step to list the directory contents after checkout
     - name: List directory contents
       run: ls -R
 
-    # Adjust working-directory if pom.xml is in a subdirectory
+    # Build with Maven, ensure that the correct working directory is set
     - name: Build with Maven
       run: mvn clean install
-      working-directory: https://github.com/hemalatha-Alla/SampleJenkins/blob/main/POM.xml
 
+    # Run tests with Maven
     - name: Run tests with Maven
       run: mvn test
-      working-directory: https://github.com/hemalatha-Alla/SampleJenkins/blob/main/POM.xml
