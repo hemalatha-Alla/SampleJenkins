@@ -16,22 +16,26 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
-        fetch-depth: 0  # Ensure full history is fetched to allow branch operations
+        fetch-depth: 0  # Ensure full history is fetched
 
-    # Conditionally pull the latest code when a pull request is raised
-    - name: Pull latest code if PR is raised
-      if: github.event_name == 'pull_request'
-      run: |
-        git checkout ${{ github.head_ref }}  # Checkout the PR branch
-        git pull origin ${{ github.head_ref }}  # Pull the latest changes for the PR branch
+    # Step to list the directory contents after checkout for debugging
+    - name: List directory contents
+      run: ls -R
 
-    # Run Maven commands to build and test the project
-    - name: Build with Maven
-      run: mvn clean install
-      working-directory: https://github.com/hemalatha-Alla/SampleJenkins
-	
+    # Step to print the current working directory
+    - name: Print working directory
+      run: pwd
 
+    # Step to print the contents of the POM.xml file for verification
+    - name: Print POM.xml contents
+      run: cat POM.xml
+
+    # Build with Maven from the correct directory
+    - name: Build with Maven (debug)
+      working-directory: ./  # Make sure to set the root directory
+      run: mvn clean install -X  # Enable full debug logging
+
+    # Run tests with Maven from the correct directory
     - name: Run tests with Maven
+      working-directory: ./  # Make sure to set the root directory
       run: mvn test
-      working-directory: https://github.com/hemalatha-Alla/SampleJenkins
-
