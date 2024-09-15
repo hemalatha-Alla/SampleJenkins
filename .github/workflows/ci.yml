@@ -1,41 +1,39 @@
-name: CI Pipeline
-
 on:
   push:
     branches:
-      - '*'  # Matches all branches
+      - ''  # Matches all branches, '' is the correct pattern
   pull_request:
     branches:
-      - '*'  # Matches all branches
+      - ''  # Matches all branches, '' is the correct pattern
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        fetch-depth: 0  # Ensure full history is fetched
+      - name: Checkout code
+        uses: actions/checkout@v3  # Updated to the latest version
+        with:
+          fetch-depth: 0  # Ensure full history is fetched
 
-    # Step to list the directory contents after checkout for debugging
-    - name: List directory contents
-      run: ls -R
+      - name: List directory contents
+        run: ls -R
 
-    # Step to print the current working directory
-    - name: Print working directory
-      run: pwd
+      - name: Print working directory
+        run: pwd
 
-    # Step to print the contents of the POM.xml file for verification
-    - name: Print POM.xml contents
-      run: cat POM.xml
+      # Step to ensure POM.xml exists in the checked-out code
+      - name: Check for POM.xml
+        run: |
+          if [ ! -f ./pom.xml ]; then 
+            echo "POM.xml not found in the root directory"; 
+            exit 1; 
+          fi
 
-    # Build with Maven from the correct directory
-    - name: Build with Maven (debug)
-      working-directory: ./  # Make sure to set the root directory
-      run: mvn clean install -X  # Enable full debug logging
+      # Build with Maven from the correct directory
+      - name: Build with Maven (debug)
+        run: mvn clean install -X  # Enable full debug logging
 
-    # Run tests with Maven from the correct directory
-    - name: Run tests with Maven
-      working-directory: ./  # Make sure to set the root directory
-      run: mvn test
+      # Run tests with Maven
+      - name: Run tests with Maven
+        run: mvn test
