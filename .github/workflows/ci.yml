@@ -16,11 +16,9 @@ jobs:
         with:
           fetch-depth: 0  # Ensure full history is fetched
 
-      # Step to list the directory contents after checkout for debugging
       - name: List directory contents
         run: ls -R
 
-      # Step to print the current working directory
       - name: Print working directory
         run: pwd
 
