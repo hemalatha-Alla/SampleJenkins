@@ -1,27 +1,60 @@
-Add code
+pipeline {
+    agent { label 'ubuntu-latest' }  // Agent on which the pipeline will run (e.g., Ubuntu)
 
-name: Maven Build and Test
+    triggers {
+        pollSCM('* * * * *')  // Trigger pipeline when there's a push (you can customize the cron)
+    }
 
-on:
-  pull_request:
-    branches:
-      - main  # or the branch where you want to trigger this
+    stages {
+        stage('Checkout Code') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '']],
+                          userRemoteConfigs: [[url: 'YOUR_REPOSITORY_URL']]])  // Replace with your repo URL
+            }
+        }
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
+        stage('List Directory Contents') {
+            steps {
+                sh 'ls -R'  // Recursively list the contents of the directory
+            }
+        }
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+        stage('Print Working Directory') {
+            steps {
+                sh 'pwd'  // Print the current working directory
+            }
+        }
 
-      - name: Set up JDK 11
-        uses: actions/setup-java@v3
-        with:
-          java-version: '11'
+        stage('Print POM.xml Contents') {
+            steps {
+                sh 'cat POM.xml'  // Print the contents of the POM.xml file
+            }
+        }
 
-      - name: Build with Maven
-        run: mvn clean install
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean install -X'  // Build with Maven in debug mode
+            }
+        }
 
-      - name: Run Tests
-        run: mvn tests
+        stage('Run Tests with Maven') {
+            steps {
+                sh 'mvn test'  // Run tests with Maven
+ }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+        }
+
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
